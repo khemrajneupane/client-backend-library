@@ -8,13 +8,18 @@ if (fs.existsSync('.env')) {
   dotenv.config({ path: '.env' })
 } else {
   logger.debug('Using .env.example file to supply config environment variables')
-  dotenv.config({ path: '.env.example' }) // you can delete this after you create your own .env file!
+  //dotenv.config({ path: '.env' }) // you can delete this after you create your own .env file!
 }
-export const ENVIRONMENT = process.env.NODE_ENV
-const prod = ENVIRONMENT === 'production' // Anything else is treated as 'dev'
-
+export const ADMIN_EMAIL = process.env['ADMIN_EMAIL']
 export const SESSION_SECRET = process.env['SESSION_SECRET'] as string
-export const JWT_SECRET = process.env['SESSION_SECRET'] as string
+export const SENDGRID_API_KEY = process.env['SENDGRID_API_KEY'] as string
+export const JWT_SECRET = process.env['JWT_SECRET'] as string
+export const ENVIRONMENT = process.env.NODE_ENV
+export const GOOGLE_CLIENT_ID = process.env['GOOGLE_CLIENT_ID'] as string
+export const GOOGLE_CLIENT_SECRET = process.env[
+  'GOOGLE_CLIENT_SECRET'
+] as string
+const prod = ENVIRONMENT === 'production' // Anything else is treated as 'dev'
 export const MONGODB_URI = (prod
   ? process.env['MONGODB_URI']
   : process.env['MONGODB_URI_LOCAL']) as string

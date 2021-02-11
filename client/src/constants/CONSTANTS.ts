@@ -1,0 +1,5 @@
+export const API_URL_USERS = 'http://localhost:3001/api/v1/users'
+export const API_URL_BOOKS = 'http://localhost:3001/api/v1/books'
+export const API_URL_LOGIN = 'http://localhost:3001/api/v1/login'
+export const API_URL_AUTHORS = 'http://localhost:3001/api/v1/authors'
+export const API_URL_LOANS = 'http://localhost:3001/api/v1/loans'

@@ -8,14 +8,21 @@ import flash from 'express-flash'
 import path from 'path'
 import mongoose from 'mongoose'
 import passport from 'passport'
+import './config/passport'
 import bluebird from 'bluebird'
-
+import cors from 'cors'
 import { MONGODB_URI, SESSION_SECRET } from './util/secrets'
-
-import movieRouter from './routers/movie'
+import bookRouter from './routers/book'
+import authorRouter from './routers/author'
+import userRouter from './routers/user'
+import forgetRouter from './routers/forgetRoute'
+import changeRouter from './routers/changeRoute'
+import loginRouter from './routers/login'
+import loanRouter from './routers/loan'
+import authenticate from './routers/auth'
 
 import apiErrorHandler from './middlewares/apiErrorHandler'
-import apiContentType from './middlewares/apiContentType'
+//import apiContentType from './middlewares/apiContentType'
 
 const app = express()
 const mongoUrl = MONGODB_URI
@@ -38,17 +45,33 @@ mongoose
   })
 
 // Express configuration
-app.set('port', process.env.PORT || 3000)
-
+app.set('port', process.env.PORT || 3001)
+app.use(
+  session({
+    secret: SESSION_SECRET,
+    proxy: true,
+    resave: true,
+    saveUninitialized: true,
+  })
+)
 // Use common 3rd-party middlewares
 app.use(compression())
 app.use(bodyParser.json())
 app.use(bodyParser.urlencoded({ extended: true }))
 app.use(lusca.xframe('SAMEORIGIN'))
 app.use(lusca.xssProtection(true))
+app.use(passport.initialize())
+app.use(passport.session())
+app.use(cors())
 
-// Use movie router
-app.use('/api/v1/movies', movieRouter)
+app.use('/api/v1/books', bookRouter)
+app.use('/api/v1/authors', authorRouter)
+app.use('/api/v1/users', userRouter)
+app.use('/api/v1/loans', loanRouter)
+app.use('/api/v1/login', loginRouter)
+app.use('/api/v1/forgetpass', forgetRouter)
+app.use('/api/v1/changepass', changeRouter)
+app.use('/api/v1/auth', authenticate)
 
 // Custom API error handler
 app.use(apiErrorHandler)
